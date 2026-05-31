@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For You 🌸</title>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #fff0f3;
+            --text-color: #5c4d53;
+            --accent-color: #ffb3c6;
+            --accent-hover: #ff8fab;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* Floating Hearts Background */
+        .particle {
+            position: fixed;
+            top: -10vh;
+            font-size: 1.5rem;
+            opacity: 0.6;
+            user-select: none;
+            pointer-events: none;
+            animation: fall linear infinite;
+            z-index: 0;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(110vh) rotate(360deg);
+            }
+        }
+
+        /* Layout & Sections */
+        section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Typography */
+        h1 {
+            font-family: 'Caveat', cursive;
+            font-size: 4.5rem;
+            color: var(--accent-hover);
+            margin-bottom: 1rem;
+        }
+
+        h2 {
+            font-weight: 400;
+            font-size: 1.8rem;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Dynamic Text */
+        .nickname-container {
+            display: inline-block;
+            min-width: 180px;
+            color: var(--accent-hover);
+            font-family: 'Caveat', cursive;
+            font-weight: 600;
+            border-bottom: 2px dashed var(--accent-color);
+        }
+
+        /* Interactive Button */
+        .hug-btn {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 1rem 2.5rem;
+            font-size: 1.2rem;
+            font-family: 'Poppins', sans-serif;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 179, 198, 0.4);
+            margin-top: 2rem;
+        }
+
+        .hug-btn:hover {
+            background-color: var(--accent-hover);
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 6px 20px rgba(255, 143, 171, 0.6);
+        }
+
+        .hug-btn:active {
+            transform: translateY(1px);
+        }
+
+        /* Message Box */
+        .message-box {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            max-width: 700px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        /* Scroll Animations */
+        .hidden {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 1s cubic-bezier(0.5, 0, 0, 1);
+        }
+
+        .show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Quote styling */
+        .quote {
+            font-style: italic;
+            font-family: 'Caveat', cursive;
+            font-size: 2.5rem;
+            color: #d16d86;
+        }
+    </style>
+</head>
+<body>
+
+    <section id="hero">
+        <h1 class="hidden">Hi there, <span class="nickname-container" id="nickname">kriniii</span> 💕</h1>
+        <h2 class="hidden">I know today might feel a little tough...</h2>
+        <p class="hidden">So I built this tiny corner of the internet just to make you smile, to remind you how loved you are, and to give you a soft place to rest your eyes.</p>
+        <div class="hidden" style="font-size: 2rem; margin-top: 20px;">👇</div>
+    </section>
+
+    <section>
+        <div class="message-box hidden">
+            <h2>You are doing amazing.</h2>
+            <p>I wish I could take the cramps away, wrap you in the warmest blanket, and bring you all your favorite snacks right now.</p>
+            <p>Since I can't do that at this exact second, I hope these words feel like a warm hug. Just rest, take it easy, and let me pamper you.</p>
+        </div>
+    </section>
+
+    <section>
+        <p class="quote hidden">"You look the prettiest even when you're just resting in your messy hair and oversized clothes."</p>
+    </section>
+
+    <section>
+        <h2 class="hidden">A little something for you...</h2>
+        <button class="hug-btn hidden" onclick="sendHug()">Click for a Virtual Hug 🧸</button>
+        <p id="hug-message" style="margin-top: 20px; font-weight: 500; color: var(--accent-hover); min-height: 30px;"></p>
+    </section>
+
+    <section>
+        <h1 class="hidden">I love you.</h1>
+        <p class="hidden">Take care of yourself today. I'm always here for you.</p>
+    </section>
+
+    <script>
+        // --- 1. Dynamic Nickname Rotator ---
+        const nicknames = ["kriniii", "betuu", "mera bachaaa"];
+        let nameIndex = 0;
+        const nicknameElement = document.getElementById("nickname");
+
+        setInterval(() => {
+            nicknameElement.style.opacity = 0;
+            setTimeout(() => {
+                nameIndex = (nameIndex + 1) % nicknames.length;
+                nicknameElement.innerText = nicknames[nameIndex];
+                nicknameElement.style.opacity = 1;
+            }, 500); // Wait for fade out
+        }, 3000); // Change every 3 seconds
+
+        nicknameElement.style.transition = "opacity 0.5s ease";
+
+        // --- 2. Scroll Reveal Animation ---
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('show');
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
+
+        const hiddenElements = document.querySelectorAll('.hidden');
+        hiddenElements.forEach((el) => observer.observe(el));
+
+        // --- 3. Virtual Hug Button Logic ---
+        function sendHug() {
+            const messages = [
+                "Sending you the biggest, warmest bear hug! 🐻💖",
+                "Wrapped you in a virtual cozy blanket! 🧶✨",
+                "Forehead kisses and infinite cuddles loading... ⏳😚",
+                "Placing a virtual hot water bag right where it hurts. 🌸🌡️"
+            ];
+            const msgElement = document.getElementById("hug-message");
+            const randomMsg = messages[Math.floor(Math.random() * messages.length)];
+            
+            msgElement.style.opacity = 0;
+            setTimeout(() => {
+                msgElement.innerText = randomMsg;
+                msgElement.style.opacity = 1;
+                msgElement.style.transition = "opacity 0.5s ease";
+                createHeartExplosion();
+            }, 200);
+        }
+
+        // --- 4. Floating Particles (Hearts) ---
+        function createParticle() {
+            const particle = document.createElement('div');
+            particle.classList.add('particle');
+            particle.innerText = ['🌸', '💖', '✨', '🧸'][Math.floor(Math.random() * 4)];
+            
+            particle.style.left = Math.random() * 100 + 'vw';
+            particle.style.animationDuration = Math.random() * 3 + 5 + 's'; // 5-8 seconds
+            particle.style.fontSize = Math.random() * 1 + 1 + 'rem';
+            
+            document.body.appendChild(particle);
+
+            setTimeout(() => {
+                particle.remove();
+            }, 8000);
+        }
+
+        setInterval(createParticle, 500); // Create a new particle every 0.5s
+
+        // --- 5. Heart Explosion on Button Click ---
+        function createHeartExplosion() {
+            for(let i = 0; i < 15; i++) {
+                setTimeout(createParticle, i * 50);
+            }
+        }
+    </script>
+</body>
+</html>
